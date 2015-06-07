@@ -4,7 +4,7 @@
   (:require [compojure.route :as route]))
 
 (defroutes site
-  (ANY "/index.html" [] (page (index)))
+  (ANY "/" [] (page (index)))
   (route/resources "/public/"))
 
 (defn foo

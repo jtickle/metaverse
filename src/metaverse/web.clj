@@ -15,7 +15,7 @@
 
 (defn index []
   {:title "Sup Yall"
-   :styles []
+   :styles ["/public/css/main.css"]
    :scripts ["/public/js/lib/three.min.js"
-   	     "/public/js/main.js"]
-   :content [:h1 "Maybe don't fuck off so much...?!"]})
+            "/public/js/main.js"]
+   :content nil})
