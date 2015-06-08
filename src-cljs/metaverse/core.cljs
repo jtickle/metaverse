@@ -1,5 +1,6 @@
 (ns metaverse.core
   (:require [cljs.core.async :refer [<! >! put! chan]]
+            [metaverse.gamepad :as gamepad]
             [metaverse.util :as util])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
@@ -83,5 +84,7 @@
     ;; Start the render loop
     (render 0 renderer scene camera)))
 
-(util/append-onload main)
-
+(util/append-onload 
+ (fn [] 
+   (main)
+   (gamepad/init)))
