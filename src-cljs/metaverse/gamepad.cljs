@@ -19,13 +19,13 @@
 ;; There does not seem to be a way to reflect upon the keys in the
 ;; gamepad object... so we hack it!
 (def GAMEPAD-KEYS
-  ["axes"
-   "buttons"
-   "connected"
-   "id"
-   "index"
-   "mapping"
-   "timestamp"])
+  [:axes
+   :buttons
+   :connected
+   :id
+   :index
+   :mapping
+   :timestamp])
 
 (defn gamepad? [x]
   (= (-> (js/Object.getPrototypeOf x) .-constructor)
@@ -42,7 +42,26 @@
   (.log js/console "isa pad?" (prn-str (gamepad? pad)))
   (.log js/console "====================")
   (doseq [k GAMEPAD-KEYS]
-    (.log js/console (prn-str [k (aget pad k)]))))
+    (.log js/console (prn-str [k (aget pad (name k))]))))
+
+(def BUTTON-KEYS
+  [:pressed
+   :value])
+(defn button->map [btn]
+  (apply merge
+    (for [k BUTTON-KEYS]
+      {k (aget btn (name k))})))
+
+(defmulti convert-gamepad-attribute first)
+(defmethod convert-gamepad-attribute :default [v]
+  (js->clj (second v)))
+(defmethod convert-gamepad-attribute :buttons [v]
+  (into [] (map button->map (second v))))
+
+(defn pad->map [pad]
+  (apply merge
+    (for [k GAMEPAD-KEYS]
+      {k (convert-gamepad-attribute [k (aget pad (name k))])})))
 
 (defn add-gamepad [e]
   (.log js/console e)
@@ -67,6 +86,7 @@
                  (remove nil?))]
     (.log js/console (prn-str pads))
     (doseq [pad pads]
-      (print-out-gamepad pad)))
+      (print-out-gamepad pad)
+      (.log js/console "As a map: " (prn-str (pad->map pad)))))
 
   (.addEventListener js/window "gamepadconnected" add-gamepad))
