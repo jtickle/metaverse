@@ -12,4 +12,6 @@ pom.xml.asc
 resources/public/js/main.js
 resources/public/js/main.js.map
 resources/public/js/metaverse
+resources/public/js/cljs/core.js
+resources/public/js/clojure/set.js
 *~
