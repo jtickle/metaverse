@@ -27,6 +27,16 @@
    :mapping
    :timestamp])
 
+; Gamepad Object actually needs:
+ ; Available Axes
+ ; Available Buttons
+ ; Connected?
+ ; ID
+ ; Index
+ ; Mapping
+ ; (defn get-state [] { :axes [ ... ] :buttons [ ... ] :timestamp ... } )
+ ; (defn register-channel ;read the docs fool )
+
 (defn gamepad? [x]
   (= (-> (js/Object.getPrototypeOf x) .-constructor)
      js/Gamepad))
