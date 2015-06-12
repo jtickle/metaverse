@@ -8,13 +8,18 @@
   (.addEventListener js/window "gamepaddisconnected" fn))
 
 (defn get-by-id [id]
-  (js->clj (first (set/select
-                   (fn [gp]
-                     (= id (.id gp)))
-                   (.getGamepads js/navigator))) {:keywordize-keys true}))
+  (pad->map
+   (first
+    (set/select
+     (fn [gp]
+       (= id (.id gp)))
+     (.getGamepads js/navigator)))))
 
 (defn get-index [index]
-  (js->clj (aget (.getGamepads js/navigator) index) {:keywordize-keys true}))
+  (pad->map
+   (aget
+    (.getGamepads js/navigator)
+    index)))
 
 ;; There does not seem to be a way to reflect upon the keys in the
 ;; gamepad object... so we hack it!
@@ -85,8 +90,8 @@
     (.log js/console "Now, loading from self index %d: %s.  %d buttons, %d axes."
           (:index gp)
           (:id gp)
-          (:buttons gp)
-          (:axes gp))))
+          (count (:buttons gp))
+          (count (:axes gp)))))
 
 (defn init []
   (.log js/console "Gamepad Time!!!")
