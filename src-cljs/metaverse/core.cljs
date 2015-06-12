@@ -1,11 +1,13 @@
 (ns metaverse.core
   (:require [cljs.core.async :refer [<! >! put! chan]]
             [metaverse.gamepad :as gamepad]
-            [metaverse.util :as util])
+            [metaverse.util :as util]
+            [metaverse.gui :as gui])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
-(defn render [ts renderer scene camera]
-  (js/requestAnimationFrame #(render % renderer scene camera))
+(defn render [ts pts renderer scene camera]
+  (js/requestAnimationFrame #(render % ts renderer scene camera))
+  (gui/set-fps (/ 1000 (- ts pts)))
   (.render renderer scene camera))
 
 (defn add-single-cube [c]
@@ -39,7 +41,8 @@
     ;; TODO(daniel): this should probably be receiving resize events
     ;; from a channel and updating dynamically...
     (.setSize renderer (aget js/window "innerWidth") (aget js/window "innerHeight"))
-    (.appendChild js/document.body (.-domElement renderer))
+    ;;(.appendChild js/document.body (.-domElement renderer))
+    (gui/set-canvas-element (.-domElement renderer))
 
     (go-loop [registered {}]
      (let [update          (<! render-state)
@@ -82,7 +85,7 @@
     (util/recur-infinitely (partial rotate-fn render-state) 200)
 
     ;; Start the render loop
-    (render 0 renderer scene camera)))
+    (render 0 0 renderer scene camera)))
 
 (util/append-onload 
  (fn [] 

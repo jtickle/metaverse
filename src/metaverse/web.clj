@@ -18,4 +18,7 @@
    :styles ["/public/css/main.css"]
    :scripts ["/public/js-lib/three.min.js"
             "/public/js/main.js"]
-   :content nil})
+   :content [:div#game-container
+             [:div#fps-display]
+             [:div#gamepad-status-display]
+             [:div#canvas-container]]})
