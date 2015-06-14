@@ -7,6 +7,9 @@
 (defn disconnected-listener [fn]
   (.addEventListener js/window "gamepaddisconnected" fn))
 
+(defn get-axis [gp idx]
+  (get (:axes gp) idx))
+
 (defn get-by-id [id]
   (pad->map
    (first

@@ -27,6 +27,17 @@
           {:0x0000 {["rotation" "x"] #(+ % 0.1)
                     ["rotation" "y"] #(+ % 0.1)}}})))
 
+(defn rotate-by-gamepad [c]
+  (let [gp (gamepad/get-index 0)]
+    (let [dx (/ (gamepad/get-axis gp 1) 10)
+          dy (/ (gamepad/get-axis gp 0) 10)
+          dz (/ (gamepad/get-axis gp 2) 10)]
+      (go
+        (>! c {:modifications
+               {:0x0000 {["rotation" "x"] #(+ % dx)
+                         ["rotation" "y"] #(+ % dy)
+                         ["rotation" "z"] #(+ % dz)}}})))))
+
 (defn main []
   (let [render-state (chan)
         scene (js/THREE.Scene.)
@@ -82,7 +93,7 @@
     ;; reads the game state over the network
     (add-single-cube render-state)
     (set-initial-camera-position render-state)
-    (util/recur-infinitely (partial rotate-fn render-state) 50)
+    (util/recur-infinitely (partial rotate-by-gamepad render-state) 50)
 
     ;; Start the render loop
     (render 0 0 renderer scene camera)))
