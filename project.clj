@@ -23,7 +23,7 @@
 	  ; (See the ClojureScript compiler documentation for details.)
 	  :compiler {
 	    :output-to     "resources/public/js/main.js"  ; default: target/cljsbuild-main.js
-	    :output-dir    "resources/public/js"
+	    :output-dir    "resources/public/js/"
 	    :optimizations :whitespace
 	    :pretty-print  true
 	    :source-map    "resources/public/js/main.js.map"}}]})
