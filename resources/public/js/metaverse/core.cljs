@@ -78,7 +78,7 @@
     ;; reads the game state over the network
     (add-single-cube render-state)
     (set-initial-camera-position render-state)
-    (util/recur-infinitely (partial rotate-fn render-state) 200)
+    (util/recur-infinitely (partial rotate-fn render-state) 50)
 
     ;; Start the render loop
     (render 0 renderer scene camera)))
